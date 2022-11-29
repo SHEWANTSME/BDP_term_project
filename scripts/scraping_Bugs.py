@@ -44,20 +44,22 @@ for index1 in range(search_albums):
     album = driver.find_elements(By.XPATH, '//div[@class="albumTitle"]/a')[index1]
     time.sleep(1)
     album.click()
-#   앨범 정보 가져오기
+    #   앨범 정보 가져오기
     album_ID = count_album
     album_title = driver.find_element(By.XPATH, '//div[@class="innerContainer"]/h1').text
     album_kind = driver.find_element(By.XPATH, '//table[@class="info"]/tbody/tr[2]/td').text
     album_genre = driver.find_element(By.XPATH, '//table[@class="info"]/tbody/tr[3]/td').text
-#   앨범 정보 df에 저장
+    #   앨범 정보 df에 저장
     album_info.loc[count_album] = [album_ID, album_title, album_kind, album_genre]
     tracks = len(driver.find_elements(By.XPATH, '//td/a[@class="trackInfo"]'))
     for index2 in range(tracks):
         track = driver.find_elements(By.XPATH, '//td/a[@class="trackInfo"]')[index2]
         time.sleep(1)
         track.click()
+        #   수록곡 정보 가져오기
         track_title = driver.find_element(By.XPATH, '//div[@class="innerContainer"]/h1').text
         track_time = driver.find_element(By.XPATH, '//table[@class="info"]/tbody/tr[4]/td').text
+        #   수록곡 정보 df에 저장
         album_track.loc[count_track] = [count_album, track_title, track_time]
         count_track+=1
         driver.back()
