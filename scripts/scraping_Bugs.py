@@ -91,10 +91,10 @@ for index1 in range(search_albums):
 
 # csv 파일로 저장
 album_info['앨범ID'] = album_info['앨범ID'].astype(int)
-album_info.to_csv('album_info_Bugs.csv')
+album_info.to_csv('album_info_Bugs.csv', index=False)
 
 album_track['앨범ID'] = album_track['앨범ID'].astype(int)
-album_track.to_csv('album_track_Bugs.csv')
+album_track.to_csv('album_track_Bugs.csv', index=False)
 
 
 
