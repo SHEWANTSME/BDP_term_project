@@ -34,7 +34,10 @@ count_album = 0
 for index1 in range(search_albums):
     album = driver.find_elements(By.XPATH, '//tr[@class="list"]/td[@class="info"]/a[@class="albumtitle ellipsis"]')[index1]
     time.sleep(1)
-    album.click()
+    try:
+        album.click()
+    except ElementClickInterceptedException:
+        continue
     #   앨범 정보 가져오기
     album_ID = count_album
     album_title = driver.find_element(By.XPATH, '//div[@class="info-zone"]/h2[@class="name"]').text
@@ -50,3 +53,7 @@ for index1 in range(search_albums):
 # csv 파일로 저장
 album_info['앨범ID'] = album_info['앨범ID'].astype(int)
 album_info.to_csv('album_info_Genie.csv')
+
+
+
+print("파일 저장이 완료되었습니다.")
