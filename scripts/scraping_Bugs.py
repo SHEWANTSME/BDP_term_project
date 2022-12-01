@@ -18,7 +18,8 @@ album_info = pd.DataFrame({'앨범ID' : [],
 # 앨범 수록곡 정보 df2 - 수록곡명, 수록곡 길이
 album_track = pd.DataFrame({'앨범ID' : [],
                            '곡명' : [],
-                           '재생시간' : []})
+                           '재생시간' : [],
+                           '가사' : []})
 
 
 
@@ -43,27 +44,46 @@ count_track = 0
 for index1 in range(search_albums):
     album = driver.find_elements(By.XPATH, '//div[@class="albumTitle"]/a')[index1]
     time.sleep(1)
-    album.click()
+    try:
+        album.click()
+    except Exception:
+        continue
     #   앨범 정보 가져오기
     album_ID = count_album
     album_title = driver.find_element(By.XPATH, '//div[@class="innerContainer"]/h1').text
-    album_kind = driver.find_element(By.XPATH, '//table[@class="info"]/tbody/tr[2]/td').text
-    album_genre = driver.find_element(By.XPATH, '//table[@class="info"]/tbody/tr[3]/td').text
-    #   앨범 정보 df에 저장
-    album_info.loc[count_album] = [album_ID, album_title, album_kind, album_genre]
+    try:
+        album_kind = driver.find_element(By.XPATH, '//table[@class="info"]/tbody/tr[2]/td').text.split(',')[0]
+        album_genre = driver.find_element(By.XPATH, '//table[@class="info"]/tbody/tr[4]/td').text
+    except Exception:
+        continue
     tracks = len(driver.find_elements(By.XPATH, '//td/a[@class="trackInfo"]'))
     for index2 in range(tracks):
         track = driver.find_elements(By.XPATH, '//td/a[@class="trackInfo"]')[index2]
         time.sleep(1)
-        track.click()
+        try:
+            track.click()
+        except Exception:
+            continue
         #   수록곡 정보 가져오기
         track_title = driver.find_element(By.XPATH, '//div[@class="innerContainer"]/h1').text
-        track_time = driver.find_element(By.XPATH, '//table[@class="info"]/tbody/tr[4]/td').text
+        isin = False
+        for i in range(len(driver.find_elements(By.XPATH, '//*[@id="container"]/section[1]/div/div[1]/table/tbody/tr'))):
+            if driver.find_elements(By.XPATH, '//*[@id="container"]/section[1]/div/div[1]/table/tbody/tr/th')[i].text == '재생 시간':
+                track_time = driver.find_element(By.XPATH, '//*[@id="container"]/section[1]/div/div[1]/table/tbody/tr/td/time').text
+                isin = True
+        if not isin:
+            track_time = None
+        try:
+            track_lyrics = driver.find_element(By.XPATH, '//div[@class="lyricsContainer"]/xmp').text
+        except Exception:
+            track_lyrics = None
         #   수록곡 정보 df에 저장
-        album_track.loc[count_track] = [count_album, track_title, track_time]
+        album_track.loc[count_track] = [count_album, track_title, track_time, track_lyrics]
         count_track+=1
         driver.back()
         time.sleep(1)
+    #   앨범 정보 df에 저장
+    album_info.loc[count_album] = [album_ID, album_title, album_kind, album_genre]
     count_album+=1
     driver.back()
     time.sleep(1)
@@ -71,7 +91,11 @@ for index1 in range(search_albums):
 
 # csv 파일로 저장
 album_info['앨범ID'] = album_info['앨범ID'].astype(int)
-album_info.to_csv('album_info.csv')
+album_info.to_csv('album_info_Bugs.csv', index=False)
 
 album_track['앨범ID'] = album_track['앨범ID'].astype(int)
-album_track.to_csv('album_track.csv')
+album_track.to_csv('album_track_Bugs.csv', index=False)
+
+
+
+print("파일 저장이 완료되었습니다.")
