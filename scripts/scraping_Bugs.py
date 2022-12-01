@@ -75,7 +75,7 @@ for index1 in range(search_albums):
             track_time = None
         try:
             track_lyrics = driver.find_element(By.XPATH, '//div[@class="lyricsContainer"]/xmp').text
-        except NoSuchElementException:
+        except Exception:
             track_lyrics = None
         #   수록곡 정보 df에 저장
         album_track.loc[count_track] = [count_album, track_title, track_time, track_lyrics]
