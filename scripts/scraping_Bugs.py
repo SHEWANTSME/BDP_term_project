@@ -46,7 +46,7 @@ for index1 in range(search_albums):
     time.sleep(1)
     try:
         album.click()
-    except ElementClickInterceptedException:
+    except Exception:
         continue
     #   앨범 정보 가져오기
     album_ID = count_album
@@ -54,7 +54,7 @@ for index1 in range(search_albums):
     try:
         album_kind = driver.find_element(By.XPATH, '//table[@class="info"]/tbody/tr[2]/td').text.split(',')[0]
         album_genre = driver.find_element(By.XPATH, '//table[@class="info"]/tbody/tr[4]/td').text
-    except NoSuchElementException:
+    except Exception:
         continue
     tracks = len(driver.find_elements(By.XPATH, '//td/a[@class="trackInfo"]'))
     for index2 in range(tracks):
@@ -62,7 +62,7 @@ for index1 in range(search_albums):
         time.sleep(1)
         try:
             track.click()
-        except ElementClickInterceptedException:
+        except Exception:
             continue
         #   수록곡 정보 가져오기
         track_title = driver.find_element(By.XPATH, '//div[@class="innerContainer"]/h1').text
