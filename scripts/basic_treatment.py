@@ -53,11 +53,26 @@ def grammer(texts):
                 continue
         corpus.append(texts[i])
     return corpus
-  
+
+# 대문자 -> 소문자
+def toLowercase(texts):
+    corpus = []
+    for i in range(len(texts)):
+        for j in range(len(texts[i])):
+            temp = texts[i][j]
+            texts[i][j] = temp.lower()
+        corpus.append(texts[i])
+    return corpus
+
+
+genre_df['가사'] = delete_tags(genre_df['가사'])
+genre_df['가사'] = mark_sentences(genre_df['가사'])  
 genre_df['가사'] = delete_tags(genre_df['가사'])
 genre_df['가사'] = mark_sentences(genre_df['가사'])
 # 맞춤법 교정 작업 오래 걸리므로 나눠 작업하기 (혹시 중간에 에러 나면 다시 해야 하니까)
 genre_df['가사'] = grammer(genre_df['가사'])
+genre_df['가사'] = toLowercase(genre_df['가사'])
+
 
 # csv 파일로 저장
 genre_df.to_csv('lyrics_basic_Bugs.csv', index=False)
