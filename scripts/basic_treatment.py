@@ -67,7 +67,6 @@ def toLowercase(texts):
 
 genre_df['가사'] = delete_tags(genre_df['가사'])
 genre_df['가사'] = mark_sentences(genre_df['가사'])  
-genre_df['가사'] = mark_sentences(genre_df['가사'])
 # 맞춤법 교정 작업 오래 걸리므로 나눠 작업하기 (혹시 중간에 에러 나면 다시 해야 하니까)
 genre_df['가사'] = grammer(genre_df['가사'])
 genre_df['가사'] = toLowercase(genre_df['가사'])
