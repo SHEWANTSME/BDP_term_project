@@ -4,7 +4,7 @@ import kss
 import pykospacing
 from hanspell import spell_checker
 
-genre_df = pd.read_csv("album_track_Bugs.csv")
+genre_df = pd.read_csv("Music.csv")
 
 # \n 태그 삭제
 def delete_tags(texts):
@@ -15,7 +15,7 @@ def delete_tags(texts):
         corpus.append(lyrics)
     return corpus
   
-  # 문장 분리 후 부호(.) 추가, 특수문자(괄호) 제거해 다시 가사 통합
+  # 문장 분리 후 특수문자(괄호) 제거함
 def mark_sentences(texts):
     corpus = []
     for i in range(len(texts)):
